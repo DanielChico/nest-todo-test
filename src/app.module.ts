@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { PrismaService } from './prisma.service';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
-	imports: [UsersModule],
-	controllers: [AppController],
-	providers: [AppService, PrismaService],
+  imports: [UsersModule, PostsModule],
+  controllers: [AppController],
+  providers: [AppService, PrismaService],
 })
-export class AppModule { }
+export class AppModule {}
