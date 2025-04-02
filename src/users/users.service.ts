@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { User as UserTypeORM } from './entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -49,5 +54,32 @@ export class UsersService {
     return this.prisma.user.delete({
       where,
     });
+  }
+}
+@Injectable()
+export class UsersV2Service {
+  constructor(
+    @InjectRepository(UserTypeORM)
+    private usersRepository: Repository<UserTypeORM>,
+  ) {}
+
+  create(data: CreateUserDto): Promise<UserTypeORM> {
+    return this.usersRepository.save({ email: data.email });
+  }
+
+  update(id: number, data: UpdateUserDto): Promise<UserTypeORM> {
+    return this.usersRepository.save({ id, email: data.email });
+  }
+
+  findAll(): Promise<UserTypeORM[]> {
+    return this.usersRepository.find();
+  }
+
+  findOne(id: number): Promise<UserTypeORM | null> {
+    return this.usersRepository.findOneBy({ id });
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.usersRepository.delete(id);
   }
 }
