@@ -15,6 +15,16 @@ async function bootstrap() {
     .setTitle('TODO App')
     .setDescription('Description')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addOAuth2({
+      type: 'oauth2',
+      flows: {
+        password: {
+          scopes: { app: 'All the app' },
+          tokenUrl: '/v1/auth/login',
+        },
+      },
+    })
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

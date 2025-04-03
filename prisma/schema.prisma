@@ -16,6 +16,7 @@ datasource db {
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
+  password String
   posts   Post[]
 }
 
@@ -24,6 +25,6 @@ model Post {
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   title      String
-  author     User       @relation(fields: [authorId], references: [id])
+  author     User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   Int
 }
